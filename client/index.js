@@ -581,6 +581,9 @@ async function autoBackupForMutation(name, args) {
     }
   }
 
+  if (name === "modx_update_element_property") {
+    return [await autoBackupElement(args.type, args, name)];
+  }
   if (name === "modx_update_element" || name === "modx_edit_element_lines") {
     return [await autoBackupElement(args.type, args, name)];
   }
@@ -821,6 +824,28 @@ const toolDefinitions = [
         id: { type: "number" },
       },
       required: ["type"],
+    },
+  },
+  {
+    name: "modx_update_element_property",
+    description:
+      "Change ONLY the value of one EXISTING default property of a snippet, chunk, plugin or template. Requires expected_value (compare-and-swap); preserves other property definitions and source code, uses standard MODX update processor.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        type: { type: "string", enum: ["snippet", "chunk", "plugin", "template"] },
+        id: { type: "number" },
+        name: { type: "string" },
+        property_name: { type: "string" },
+        expected_value: { type: ["string", "number", "boolean", "null"] },
+        value: { type: ["string", "number", "boolean", "null"] },
+        _runtime_preconditions: {
+          type: "object",
+          description: "Internal Site Agent Runtime CAS preconditions.",
+          additionalProperties: true
+        },
+      },
+      required: ["type", "property_name", "expected_value", "value"],
     },
   },
   {
@@ -2522,6 +2547,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           },
         ],
       };
+    }
+
+    if (name === "modx_update_element_property") {
+      const result = await modxApiRequest({action: "update_element_property", type: args.type, data: args});
+      runMutationAuditHook(name, args || {}, result, safetyBackups);
+      return {content: [{type: "text", text: stringifyApiResult(result)}]};
     }
 
     if (
