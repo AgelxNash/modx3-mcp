@@ -2,6 +2,13 @@
 
 # MODX MCP — Changelog
 
+## 1.2.1-beta1 (unreleased, test-only)
+
+- Resource TV value writes now enforce connector-side site revision CAS and expected TV values under the same mutation lock on MODX 2 and MODX 3.
+- Reject unknown/unassigned TV keys before updating; apply multiple TV values transactionally.
+- Advertise precondition_version=2 for Runtime feature detection; the shared MCP action count remains 192.
+- This beta is for isolated test installations only, not a stable or public release.
+
 ## 1.2.0 (2026-10-07)
 
 Minor release extending the shared MODX 2 / MODX 3 contract from 182 to **192 server actions** and adding Runtime-safe compare-and-swap preconditions for concurrent agent work.

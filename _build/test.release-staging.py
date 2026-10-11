@@ -1,12 +1,13 @@
 from pathlib import Path
 import re
+import json
 import subprocess
 import tempfile
 import sys
 
 root = Path(__file__).resolve().parents[1]
 errors = []
-expected_version = '1.2.0'
+expected_version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
 expected_packages = {
     'modx2': 'MODXMCP',
     'modx3': 'MODX3MCP',
@@ -101,5 +102,5 @@ if errors:
 
 print(
     'RELEASE_STAGING_OK '
-    'modx2=MODXMCP/1.2.0 modx3=MODX3MCP/1.2.0'
+    f'modx2=MODXMCP/{expected_version} modx3=MODX3MCP/{expected_version}'
 )
