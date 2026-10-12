@@ -2,7 +2,14 @@
 
 # Connector validation status
 
-## Unreleased GitHub main (2026-10-12)
+## Patch 1.2.2 validation
+
+This patch combines previously validated CAS source (see below) and the MODX 2/3 manager-interface update. Staged platform build checks require both CSS files, all manager templates, and platform-correct processors for token retrieval and allowlisted settings. Responsive browser geometry tested at 1500, 900 and 480 px on the graph; manager dashboard scrolling also tested. The graph backend returned a successful summary. PHP syntax, package build and full transport installation require separate release verification; do not infer that an earlier 1.2.1 package-install cycle verifies the new artifact.
+
+
+Transport verification for 1.2.2: both ZIP packages built on PHP 8.2.32 and passed ZIP integrity checks. Both packages installed successfully on authorized MODX 2.8.9 and MODX 3.2.4 TEST sites. API authentication and read access remained available; all 16 component settings matched their pre-install values by digest, and both front pages returned HTTP 200. Both archives include the graph and manager templates and CSS. No production installation was performed. Authorized-manager button clicks still require in-session review; a separate live element-property CAS cycle has not yet been run.
+
+## Pre-release source verification (2026-10-12)
 
 Current source integrates element property CAS and resource TV CAS v2 on MODX 2 and MODX 3: 193 actions (81 reads / 112 mutations). Historical stable release 1.2.1 has 192 actions. These source changes are not a newly published package.
 

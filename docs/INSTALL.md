@@ -8,12 +8,16 @@ MODX MCP lets a standard MCP-compatible AI client work with **MODX Revolution 2.
 
 ## 1. Choose the MODX package
 
-- **MODX 2.8.x:** `modx2mcp-1.2.1-pl.transport.zip`.
-- **MODX 3.x:** `modx3mcp-1.2.1-pl.transport.zip`.
+- **MODX 2.8.x:** `modx2mcp-1.2.2-pl.transport.zip`.
+- **MODX 3.x:** `modx3mcp-1.2.2-pl.transport.zip`.
 
 Both variants use the same public tool contract and Node.js client. Download the appropriate package from [GitHub Releases](https://github.com/rumata-estor/modx3-mcp/releases) or a supported MODX package provider.
 
 **Existing MODX 2 installations:** when migrating from the legacy `modxmcp` package identity to `modx2mcp`, a clean uninstall of the old package followed by installation of `modx2mcp` is recommended. A clean uninstall removes old `modxmcp.*` settings and the API token. Preserve relevant configuration as needed and update your client credentials afterwards. Subsequent normal `modx2mcp` upgrades preserve the current token.
+
+### Manager dashboard
+
+Under **Components → MODX MCP**, copy the API URL, reveal/copy the existing token only if your manager account has **settings** permission, toggle optional capability groups, and configure **Auto-static** / **Audit log**. Changes to settings and capabilities take effect only after pressing their save buttons. The **Dependency graph** is available via the graph link; its canvas zooms with the mouse wheel, while the surrounding panel scrolls to show filters and details. **Regenerate token** invalidates all existing client credentials; ordinary package updates do not. The page saying “MCP enabled” is not a live verification of any specific client connection.
 
 ## 2. Install the transport package
 
@@ -48,7 +52,7 @@ On the machine running your AI application, install **Node.js 18+** with npm/`np
       "command": "npx",
       "args": [
         "-y",
-        "github:rumata-estor/modx3-mcp#v1.2.1"
+        "github:rumata-estor/modx3-mcp#v1.2.2"
       ],
       "env": {
         "MODX_MCP_SITE_URL": "https://example.com/assets/components/modxmcp/api.php",
