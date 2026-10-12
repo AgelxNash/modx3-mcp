@@ -2,6 +2,10 @@
 
 # Connector validation status
 
+## 1.2.3 release preparation (2026-10-12)
+
+The 1.2.3 source retains the unchanged 193-action server contract (192 public MCP tools). Both platform transport ZIPs were built using the shared relative-to-absolute documentation-link converter; ZIP integrity and the embedded version-pinned Russian/English README/CHANGELOG/image URLs were verified. The standalone transport-documentation PHP regression test passed, as did dual-platform staging, portability, manager-layout and client/server contract checks. **Not yet a published or installed release** at this stage. The prior v1.2.2 installation verification remains below.
+
 ## Published release 1.2.2 — validation (2026-10-12)
 
 **Stable release:** [v1.2.2](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.2), for MODX 2.8.x and 3.x. The published contract contains **193 server actions** (81 reads and 112 mutations), of which **192 are public MCP tools**. This release includes transactional resource-TV CAS v2, element-property CAS, and the redesigned manager dashboard and dependency graph.

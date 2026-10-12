@@ -39,6 +39,10 @@ Build each transport package on a MODX installation of the matching major versio
 
 **Next-build metadata fix (after v1.2.2):** the shared `_build/transport.documentation.php` converts relative links from README and CHANGELOG into absolute GitHub URLs **only inside package metadata**. The source Markdown files remain unchanged. A PHP contract test checks the links, and two temporary MODX 2/3 archives were built to verify the manifests. The already published v1.2.2 assets do **not** contain this change; it is for the next release.
 
+## Next patch: 1.2.3 platform build
+
+Both MODX 2 and MODX 3 builds now transform repository-relative README and CHANGELOG links **only in transport package metadata**, pinning links and images to the package version tag instead of the MODX manager's current path. The normal GitHub Markdown stays unchanged. Both platform ZIPs have been built and their manifests inspected during release preparation; the published stable release remains 1.2.2 until v1.2.3 is tagged and published.
+
 ## Current release: 1.2.2 platform build
 
 The two platform-specific transports retain `MODX2MCP` / `MODX3MCP` package identities and a shared `modxmcp` namespace. The MODX 2 staging overlay replaces both manager controllers (`index`, `graph`) and the new `gettoken3` / `savesettings3` processors with `modProcessor`-compatible variants. The responsive dashboards, graph CSS/JS and lexicons are shared. The current **published** v1.2.2 contract has 193 server actions (81 reads / 112 mutations), including 192 public MCP tools and the internal `get_capabilities` action. The two platform-specific v1.2.2 transport archives were built, installed and smoke-tested on authorized MODX 2.8.9-pl and MODX 3.2.4-pl test sites. Previous release 1.2.1 notes below are historical.

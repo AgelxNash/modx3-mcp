@@ -2,7 +2,7 @@
 
 **English** | [Русский](SETTINGS.ru.md) · [Installation](INSTALL.md) · [Security](SECURITY.md)
 
-For **MODX MCP 1.2.2** on MODX 2.8.x and 3.x. This document covers all **16 system settings** defined by both transport packages. Defaults come from `_build/data/transport.settings.php`; behavior has been checked against the PHP implementation.
+For **MODX MCP 1.2.3** on MODX 2.8.x and 3.x. This document covers all **16 system settings** defined by both transport packages. Defaults come from `_build/data/transport.settings.php`; behavior has been checked against the PHP implementation.
 
 In MODX manager: **System → System Settings**, namespace `modxmcp`. **Components → MODX MCP** also allows changing Audit log, Auto-static, capability groups and safely viewing/copying the API token. Change other options under System Settings. Refresh MODX caches when required and refresh the MCP client's capabilities after changes.
 

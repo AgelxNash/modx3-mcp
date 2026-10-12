@@ -2,6 +2,12 @@
 
 # MODX MCP — Changelog
 
+## 1.2.3 (2026-10-12)
+
+- Fix relative links in the MODX package-manager installation wizard: GitHub repository documentation, Russian/English README and CHANGELOG, cross-references, anchors and images now have absolute GitHub URLs in transport metadata for MODX 2 and 3.
+- Source Markdown remains unchanged; the conversion is isolated to release builders and covered by a PHP regression test.
+- No new MCP operations (193 server actions / 192 public tools); existing configuration and API token are preserved on standard upgrade.
+
 ## 1.2.2 (2026-10-12)
 
 Maintenance patch for MODX 2.8.x and 3.x:
