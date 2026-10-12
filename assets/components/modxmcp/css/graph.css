@@ -1,0 +1,143 @@
+/* Height is measured in JS (see fitShell) — hard-coding calc(100vh - <guess>) clipped the
+   bottom of the panel whenever the manager chrome was taller than the guess, with no scroll
+   to reach it. This is only the pre-measure fallback. */
+#mcpg { --line:#e3e8ee; --ink:#1f2937; --muted:#7b8794; --bg:#fff; --soft:#f7f9fb;
+    display:flex; flex-direction:column; height:620px; min-height:420px;
+    font-size:13px; color:var(--ink); background:var(--bg); }
+#mcpg * { box-sizing:border-box; }
+#mcpg a { color:#2563eb; text-decoration:none; cursor:pointer; }
+#mcpg a:hover { text-decoration:underline; }
+
+/* toolbar */
+#mcpg .g-bar { display:flex; align-items:center; gap:12px; padding:10px 14px; border-bottom:1px solid var(--line); flex:0 0 auto; flex-wrap:wrap; }
+#mcpg .g-bar h2 { margin:0; font-size:16px; font-weight:600; }
+#mcpg .g-search { position:relative; }
+#mcpg .g-search input { width:230px; padding:6px 9px; border:1px solid var(--line); border-radius:5px; font-size:13px; }
+#mcpg .g-results { position:absolute; z-index:30; top:100%; left:0; width:290px; max-height:280px; overflow:auto;
+    background:#fff; border:1px solid var(--line); border-radius:6px; box-shadow:0 6px 18px rgba(16,24,40,.12); display:none; }
+#mcpg .g-results div { padding:6px 10px; cursor:pointer; display:flex; align-items:center; gap:7px; }
+#mcpg .g-results div:hover, #mcpg .g-results div.sel { background:var(--soft); }
+#mcpg .g-stat { color:var(--muted); margin-left:auto; white-space:nowrap; }
+#mcpg button.g-btn { padding:6px 11px; border:1px solid var(--line); background:#fff; border-radius:5px; cursor:pointer; font-size:13px; color:var(--ink); }
+#mcpg button.g-btn:hover { background:var(--soft); }
+#mcpg button.g-btn[disabled] { opacity:.45; cursor:default; }
+#mcpg button.g-btn.on { background:#eef4ff; border-color:#b9d0fb; color:#1d4ed8; }
+#mcpg .g-seg { display:inline-flex; }
+#mcpg .g-seg button { border-radius:0; margin-left:-1px; }
+#mcpg .g-seg button:first-child { border-radius:5px 0 0 5px; margin-left:0; }
+#mcpg .g-seg button:last-child { border-radius:0 5px 5px 0; }
+#mcpg .g-seg button.on { position:relative; z-index:1; }
+
+/* body */
+#mcpg .g-body { display:flex; flex:1 1 auto; min-height:0; }
+#mcpg .g-side { width:250px; flex:0 0 250px; border-right:1px solid var(--line); overflow:auto; padding:12px; background:var(--soft); }
+#mcpg .g-side h3 { margin:0 0 7px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+#mcpg .g-side section { margin-bottom:18px; }
+#mcpg .g-side label { display:flex; align-items:center; gap:6px; padding:3px 0; cursor:pointer; }
+#mcpg .g-side label span.c { flex:1 1 auto; }
+#mcpg .g-side label span.n { color:var(--muted); font-variant-numeric:tabular-nums; }
+#mcpg .g-list { list-style:none; margin:0; padding:0; max-height:230px; overflow:auto; }
+#mcpg .g-list li { padding:3px 5px; border-radius:4px; cursor:pointer; display:flex; gap:6px; align-items:baseline; }
+#mcpg .g-list li:hover { background:#eef2f7; }
+#mcpg .g-list li .t { color:var(--muted); font-size:11px; }
+#mcpg .g-empty-note { color:var(--muted); margin:0; }
+
+/* canvas */
+#mcpg .g-stage { position:relative; flex:1 1 auto; min-width:0; background:
+    radial-gradient(circle at 1px 1px, #eef1f5 1px, transparent 0) 0 0/22px 22px, #fff; }
+#mcpg canvas { display:block; width:100%; height:100%; cursor:grab; }
+#mcpg canvas.drag { cursor:grabbing; }
+#mcpg .g-overlay { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center;
+    justify-content:center; color:var(--muted); pointer-events:none; text-align:center; padding:20px; }
+#mcpg .g-crumb { position:absolute; top:10px; left:12px; display:none; align-items:center; gap:8px;
+    background:rgba(255,255,255,.95); border:1px solid var(--line); border-radius:20px; padding:5px 8px 5px 12px;
+    box-shadow:0 2px 8px rgba(16,24,40,.08); max-width:calc(100% - 24px); }
+#mcpg .g-crumb b { font-weight:600; }
+#mcpg .g-hint { position:absolute; bottom:10px; left:12px; color:#9aa5b1; font-size:11px; pointer-events:none; }
+#mcpg .g-legend { position:absolute; bottom:10px; right:12px; display:flex; gap:10px; flex-wrap:wrap;
+    justify-content:flex-end; max-width:60%; pointer-events:none; }
+#mcpg .g-legend span { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:11px; }
+
+/* details */
+#mcpg .g-info { width:290px; flex:0 0 290px; border-left:1px solid var(--line); overflow:auto; padding:14px; display:none; }
+#mcpg .g-info.open { display:block; }
+#mcpg .g-info h3 { margin:0 0 2px; font-size:15px; word-break:break-word; }
+#mcpg .g-info .meta { color:var(--muted); margin-bottom:10px; }
+#mcpg .g-info .acts { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+#mcpg .g-info h4 { margin:12px 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+#mcpg .g-info .warn { background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; padding:7px 9px; border-radius:5px; margin-bottom:10px; }
+#mcpg .g-info .note { background:#fffbeb; border:1px solid #fde68a; color:#92400e; padding:7px 9px; border-radius:5px; margin-bottom:10px; }
+
+#mcpg .dot { display:inline-block; width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+#mcpg .dot.hollow { background:#fff !important; border:2px solid #ef4444; width:7px; height:7px; }
+
+/* MODX MCP graph dashboard — aligned with the two-column manager dashboard. */
+#mcpg {
+    --line:#dce3e9; --ink:#273441; --muted:#73818e; --soft:#f8fafc;
+    width:100%;max-width:1460px;margin:0 auto;padding:22px 24px 30px;
+    min-height:0;height:680px;box-sizing:border-box;
+    background:transparent;color:var(--ink);font-size:15px;line-height:1.48;
+    border:none;overflow-x:hidden;overflow-y:scroll;
+    overscroll-behavior-y:contain;scrollbar-gutter:stable;
+}
+#mcpg::-webkit-scrollbar,#mcpg .g-side::-webkit-scrollbar,#mcpg .g-info::-webkit-scrollbar{width:11px}
+#mcpg::-webkit-scrollbar-thumb,#mcpg .g-side::-webkit-scrollbar-thumb,#mcpg .g-info::-webkit-scrollbar-thumb{background:#aebdc9;border-radius:8px;border:2px solid #f3f6f8}
+#mcpg::-webkit-scrollbar-track{background:#f3f6f8}
+#mcpg .g-page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;flex:0 0 auto;margin-bottom:21px}
+#mcpg .g-page-heading h2{color:#243442;font-size:28px;line-height:1.25;font-weight:650;margin:0 0 5px}
+#mcpg .g-page-heading p{font-size:15px;color:#65727f;margin:0}
+#mcpg .g-back{border:1px solid #cbd6df;border-radius:7px;background:#f7fafc;color:#304a5c;padding:10px 14px;font-size:14px;font-weight:600;white-space:nowrap;text-decoration:none}
+#mcpg .g-back:hover{background:#eaf2f7;text-decoration:none}
+#mcpg .g-bar,#mcpg .g-body{background:#fff;border:1px solid #dce3e9;box-shadow:0 3px 12px rgba(26,48,69,.045)}
+#mcpg .g-bar{border-radius:11px;padding:16px 19px;margin-bottom:19px;gap:10px;flex:0 0 auto;align-content:center;min-height:74px}
+#mcpg .g-search{flex:1 1 210px;min-width:190px;max-width:360px}
+#mcpg .g-search input{height:42px;padding:9px 13px;border-color:#cbd5dd;width:100%;font-size:14px;color:#273441;background:#f8fafb}
+#mcpg .g-results{width:100%;min-width:270px;font-size:14px}
+#mcpg .g-results div{padding:9px 12px}
+#mcpg .g-stat{font-size:14px;margin-left:auto;color:#647482}
+#mcpg button.g-btn,#mcpg .g-info a.g-btn{font-size:14px;font-weight:600;padding:9px 13px;min-height:42px;border-radius:6px;border-color:#cad5dd;background:#f7fafc;color:#304a5c;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+#mcpg button.g-btn:hover,#mcpg .g-info a.g-btn:hover{background:#eaf2f7;border-color:#a9becd;text-decoration:none}
+#mcpg button.g-btn.on{background:#e9f2f7;border-color:#9dbdce;color:#226d96}
+#mcpg .g-seg{gap:0;white-space:nowrap}
+#mcpg .g-seg button:first-child{border-radius:6px 0 0 6px}
+#mcpg .g-seg button:last-child{border-radius:0 6px 6px 0}
+#mcpg button:focus-visible,#mcpg a:focus-visible,#mcpg input:focus-visible,#mcpg:focus-visible{outline:2px solid #3f89c3;outline-offset:2px}
+#mcpg .g-body{border-radius:11px;overflow:hidden;flex:1 0 560px;min-height:560px}
+#mcpg .g-side{width:302px;flex:0 0 302px;padding:22px 19px;background:#fbfcfd;border-right:1px solid var(--line)}
+#mcpg .g-side section{margin-bottom:24px}
+#mcpg .g-side h3{margin:0 0 11px;font-size:14px;letter-spacing:0;text-transform:none;font-weight:700;color:#344958}
+#mcpg .g-side label{padding:7px 0;font-size:14px;gap:9px;line-height:1.3}
+#mcpg .g-side label span.c{min-width:0;overflow-wrap:anywhere}
+#mcpg .g-side input[type="checkbox"]{width:17px;height:17px;flex-shrink:0;accent-color:#246e95}
+#mcpg .g-list{max-height:245px}
+#mcpg .g-list li{padding:7px 6px;line-height:1.4;font-size:13px}
+#mcpg .g-list li .t{font-size:12px}
+#mcpg .g-empty-note{font-size:13px!important}
+#mcpg .g-stage{background:radial-gradient(circle at 1px 1px,#e9edf2 1px,transparent 0) 0 0/24px 24px,#fff;min-height:0}
+#mcpg .g-hint{font-size:12px;background:rgba(255,255,255,.90);padding:5px 9px;border-radius:6px;max-width:calc(100% - 24px);line-height:1.5}
+#mcpg .g-legend span{font-size:12px}
+#mcpg .g-info{width:320px;flex:0 0 320px;padding:23px 19px;background:#fff}
+#mcpg .g-info h3{font-size:18px;color:#263744}
+#mcpg .g-info h4{font-size:14px;letter-spacing:0;text-transform:none;color:#344958}
+#mcpg .g-info .meta{font-size:13px}
+#mcpg .g-info .note,#mcpg .g-info .warn{font-size:13px;padding:10px 11px}
+@media(max-width:1120px){
+    #mcpg .g-body{flex:1 0 auto;flex-direction:column;min-height:0;overflow:visible}
+    #mcpg .g-side{width:100%;flex:0 0 auto;border-right:0;border-bottom:1px solid var(--line);overflow:visible;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px}
+    #mcpg .g-side section{min-width:0}
+    #mcpg .g-stage{height:560px;min-height:560px;flex:0 0 560px}
+    #mcpg .g-info.open{width:100%;flex:0 0 auto;max-height:420px;border-left:0;border-top:1px solid var(--line)}
+    #mcpg .g-stat{margin-left:0}
+}
+@media(max-width:670px){
+    #mcpg{padding:15px 11px 24px}
+    #mcpg .g-page-heading h2{font-size:24px}
+    #mcpg .g-bar{padding:14px 13px;gap:9px}
+    #mcpg .g-search{max-width:none;flex-basis:100%}
+    #mcpg .g-seg{width:100%}
+    #mcpg .g-seg button{flex:1 1 auto;font-size:13px;padding:9px 7px}
+    #mcpg .g-side{grid-template-columns:minmax(0,1fr);padding:18px 16px}
+    #mcpg .g-stage{height:450px;min-height:450px;flex-basis:450px}
+    #mcpg .g-legend{display:none}
+    #mcpg .g-hint{font-size:11px;right:10px}
+}

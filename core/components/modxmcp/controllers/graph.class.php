@@ -37,8 +37,12 @@ class ModxmcpGraphManagerController extends modExtraManagerController {
         $cfg = json_encode(array(
             'connector_url' => $assetsUrl . 'connector.php',
             'manager_url'   => $this->modx->getOption('manager_url'),
-        ), JSON_UNESCAPED_UNICODE);
+        ), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         $this->addHtml('<script type="text/javascript">var ModxmcpGraph = ' . $cfg . ';</script>');
+        // Isolated graph dashboard stylesheet, cache-busted alongside graph.js.
+        $cssFile = $this->modx->getOption('assets_path') . 'components/modxmcp/css/graph.css';
+        $cssVer = file_exists($cssFile) ? filemtime($cssFile) : '1';
+        $this->addCss($assetsUrl . 'css/graph.css?v=' . $cssVer);
         // Cache-bust by mtime so the browser always gets the current build.
         $jsFile = $this->modx->getOption('assets_path') . 'components/modxmcp/js/graph.js';
         $ver = file_exists($jsFile) ? filemtime($jsFile) : '1';
