@@ -2,6 +2,10 @@
 
 # Connector validation status
 
+## Unreleased GitHub main (2026-10-12)
+
+Current source integrates element property CAS and resource TV CAS v2 on MODX 2 and MODX 3: 193 actions (81 reads / 112 mutations). Historical stable release 1.2.1 has 192 actions. These source changes are not a newly published package.
+
 > User documentation: [installation](INSTALL.md), [capabilities](CAPABILITIES.md), [API reference](API.md), [security](SECURITY.md).
 
 Stable-release 1.2.0 validation: 2026-10-07. Static, processor-compatibility, Runtime-CAS and platform transport checks were repeated for the 192-action release contract.
