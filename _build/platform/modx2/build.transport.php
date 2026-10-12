@@ -210,10 +210,12 @@ $builder->putVehicle($assetsVehicle);
 $modx->log(modX::LOG_LEVEL_INFO, 'Packaged core + assets files and install/uninstall resolvers.');
 
 /* ---- package attributes ---- */
+// Transform documentation links only for package-manager metadata.
+require_once $buildDir . 'transport.documentation.php';
 $builder->setPackageAttributes(array(
     'license'   => file_exists($sources['docs'] . 'LICENSE') ? file_get_contents($sources['docs'] . 'LICENSE') : 'MIT',
-    'readme'    => file_exists($sources['docs'] . 'README.md') ? file_get_contents($sources['docs'] . 'README.md') : 'modxMCP — MCP endpoint for MODX.',
-    'changelog' => file_exists($sources['docs'] . 'CHANGELOG.md') ? file_get_contents($sources['docs'] . 'CHANGELOG.md') : '',
+    'readme'    => file_exists($sources['docs'] . 'README.md') ? modxmcpTransportDocumentation(file_get_contents($sources['docs'] . 'README.md'), 'README.md') : 'modxMCP — MCP endpoint for MODX.',
+    'changelog' => file_exists($sources['docs'] . 'CHANGELOG.md') ? modxmcpTransportDocumentation(file_get_contents($sources['docs'] . 'CHANGELOG.md'), 'CHANGELOG.md') : '',
     'requires'  => array(
         'modx' => '>=2.8.0,<3.0.0',
     ),
