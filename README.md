@@ -35,6 +35,7 @@ Use the manager dashboard to review the API endpoint, manage token access, confi
 | Explore all features | [Capabilities and tools](docs/CAPABILITIES.md) | [Возможности](docs/CAPABILITIES.ru.md) |
 | Build integrations | [API reference: 192 tools](docs/API.md) | [Справочник API](docs/API.ru.md) |
 | Deploy safely | [Security and trust model](docs/SECURITY.md) | [Безопасность](docs/SECURITY.ru.md) |
+| System settings | [All 16 system settings](docs/SETTINGS.md) | [Все 16 настроек](docs/SETTINGS.ru.md) |
 
 Additional references: [development](DEVELOPMENT.md), [build architecture](docs/BUILD-ARCHITECTURE.md), [validation status](docs/VALIDATION.md).
 
