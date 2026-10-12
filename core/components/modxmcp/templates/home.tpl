@@ -1,75 +1,123 @@
-<div class="container" style="padding:18px;max-width:840px;">
-    <h2 style="margin-top:0;">MODX MCP</h2>
-    <p style="color:#666;">{$l.intro}</p>
+<div class="modxmcp-ui">
+    <header class="mcp-head">
+        <div>
+            <h2>MODX MCP</h2>
+            <p>{$l.ui_subtitle}</p>
+        </div>
+        <div class="mcp-health {if $enabled}mcp-health-on{else}mcp-health-off{/if}">
+            <span class="mcp-health-dot" aria-hidden="true"></span>
+            {if $enabled}{$l.ui_enabled}{else}{$l.ui_disabled}{/if}
+        </div>
+    </header>
 
-    <table class="modxmcp-status" cellpadding="6" style="border-collapse:collapse;width:100%;margin:14px 0;">
-        <tr><td style="width:240px;color:#888;">{$l.endpoint}</td><td><code>{$endpoint}</code></td></tr>
-        <tr><td style="color:#888;">{$l.enabled}</td><td>{if $enabled}<span style="color:#2e7d32;font-weight:bold;">{$l.yes}</span>{else}<span style="color:#c62828;font-weight:bold;">{$l.no}</span> &mdash; {$l.enable_hint}{/if}</td></tr>
-        <tr><td style="color:#888;">{$l.token}</td><td>{if $token_set}<code style="user-select:all;background:#f6f8fa;padding:2px 6px;border-radius:4px;">{$token_preview}</code>{else}<span style="color:#c62828;">{$l.token_notset}</span>{/if}</td></tr>
-        <tr><td style="color:#888;">{$l.auto_static} (<code>modxmcp.auto_static</code>)</td><td>{if $auto_static}{$l.on}{else}{$l.off}{/if}</td></tr>
-        <tr><td style="color:#888;">{$l.audit_log} (<code>modxmcp.audit_log</code>)</td><td>{if $audit_log}{$l.on}{else}{$l.off}{/if}</td></tr>
-    </table>
+    <div class="mcp-layout">
+        <div class="mcp-column">
+            <section class="mcp-panel" aria-labelledby="mcp-connect-title">
+                <div class="mcp-panel-head">
+                    <h3 id="mcp-connect-title">{$l.ui_connection}</h3>
+                    <p>{$l.ui_connection_help}</p>
+                </div>
+                <div class="mcp-field">
+                    <label for="mcp-endpoint">{$l.ui_endpoint}</label>
+                    <div class="mcp-input-line">
+                        <input id="mcp-endpoint" type="text" readonly value="{$endpoint|escape:'html'}" spellcheck="false" autocomplete="off">
+                        <button type="button" class="mcp-button" id="mcp-copy-endpoint">{$l.ui_copy}</button>
+                    </div>
+                </div>
+                <div class="mcp-field">
+                    <label for="mcp-token">{$l.token}</label>
+                    {if $token_set}
+                        <div class="mcp-input-line">
+                            <input id="mcp-token" type="text" readonly value="{$token_preview|escape:'html'}" data-preview="{$token_preview|escape:'html'}" spellcheck="false" autocomplete="off" aria-label="{$l.token|escape:'html'}">
+                            <button type="button" class="mcp-button" id="mcp-show-token">{$l.ui_show}</button>
+                            <button type="button" class="mcp-button" id="mcp-copy-token">{$l.ui_copy}</button>
+                        </div>
+                        <p class="mcp-field-note">{$l.ui_token_help}</p>
+                    {else}
+                        <p class="mcp-no-token">{$l.token_notset}</p>
+                    {/if}
+                </div>
+                <div class="mcp-danger-zone">
+                    <p>{$l.ui_regenerate_help}</p>
+                    <button type="button" class="mcp-button mcp-button-outline" id="modxmcp-regenerate">{$l.regenerate}</button>
+                    <div id="modxmcp-token-result" class="mcp-new-token" hidden>
+                        <label for="modxmcp-token-value">{$l.new_token}</label>
+                        <div class="mcp-input-line">
+                            <input id="modxmcp-token-value" type="text" readonly spellcheck="false" autocomplete="off">
+                            <button type="button" class="mcp-button" id="mcp-copy-new-token">{$l.ui_copy}</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="mcp-status" id="mcp-connection-status" role="status" aria-live="polite"></p>
+            </section>
 
-    <p>
-        <button id="modxmcp-regenerate" class="x-btn" style="padding:8px 16px;cursor:pointer;">{$l.regenerate}</button>
-    </p>
-    <div id="modxmcp-token-result" style="display:none;margin-top:12px;padding:12px;border:1px solid #cfe3cf;background:#f3faf3;border-radius:4px;">
-        <strong>{$l.new_token}</strong>
-        <pre id="modxmcp-token-value" style="white-space:pre-wrap;word-break:break-all;margin:6px 0 0;"></pre>
+            <section class="mcp-panel" aria-labelledby="mcp-settings-title">
+                <div class="mcp-panel-head">
+                    <h3 id="mcp-settings-title">{$l.ui_settings}</h3>
+                    <p>{$l.ui_settings_help}</p>
+                </div>
+                <label class="mcp-toggle-row" for="mcp-auto-static">
+                    <span><strong>{$l.auto_static}</strong><small>{$l.ui_auto_static_desc}</small></span>
+                    <input id="mcp-auto-static" type="checkbox" class="mcp-setting" data-key="auto_static"{if $auto_static} checked{/if}>
+                </label>
+                <label class="mcp-toggle-row" for="mcp-audit-log">
+                    <span><strong>{$l.audit_log}</strong><small>{$l.ui_audit_desc}</small></span>
+                    <input id="mcp-audit-log" type="checkbox" class="mcp-setting" data-key="audit_log"{if $audit_log} checked{/if}>
+                </label>
+                <div class="mcp-actions">
+                    <button type="button" class="mcp-button mcp-button-primary" id="mcp-save-settings" disabled>{$l.ui_save_settings}</button>
+                    <span class="mcp-status" id="mcp-settings-status" role="status" aria-live="polite"></span>
+                </div>
+                <p class="mcp-field-note">{$l.settings_hint}</p>
+            </section>
+        </div>
+
+        <div class="mcp-column">
+            {if $components || $features}
+            <section class="mcp-panel" aria-labelledby="mcp-capabilities-title">
+                <div class="mcp-panel-head">
+                    <h3 id="mcp-capabilities-title">{$l.ui_capabilities}</h3>
+                    <p>{$l.ui_capabilities_help}</p>
+                </div>
+                {if $components}
+                <h4 class="mcp-subhead">{$l.ui_components}</h4>
+                <div class="mcp-check-grid">
+                {foreach $components as $g}
+                    <label class="mcp-check-row"><input type="checkbox" class="modxmcp-grp" data-group="{$g.key|escape:'html'}"{if $g.enabled} checked{/if}><span>{$g.label|escape:'html'}<small>{$g.key|escape:'html'}</small></span></label>
+                {/foreach}
+                </div>
+                {/if}
+                {if $features}
+                <h4 class="mcp-subhead">{$l.ui_modx_features}</h4>
+                <div class="mcp-check-grid">
+                {foreach $features as $g}
+                    <label class="mcp-check-row"><input type="checkbox" class="modxmcp-grp" data-group="{$g.key|escape:'html'}"{if $g.enabled} checked{/if}><span>{$g.label|escape:'html'}<small>{$g.key|escape:'html'}</small></span></label>
+                {/foreach}
+                </div>
+                {/if}
+                <div class="mcp-actions">
+                    <button type="button" class="mcp-button mcp-button-primary" id="modxmcp-savegroups" disabled>{$l.ui_save_capabilities}</button>
+                    <span class="mcp-status" id="modxmcp-groups-status" role="status" aria-live="polite"></span>
+                </div>
+            </section>
+            {/if}
+
+            <section class="mcp-panel" aria-labelledby="mcp-tools-title">
+                <div class="mcp-panel-head"><h3 id="mcp-tools-title">{$l.ui_tools}</h3></div>
+                <div class="mcp-tool-row">
+                    <div><strong>{$l.ui_graph}</strong><p>{$l.ui_graph_help}</p></div>
+                    <a class="mcp-button" href="?a=graph&amp;namespace=modxmcp">{$l.ui_open_graph} &rarr;</a>
+                </div>
+                {if $integrations}
+                <details class="mcp-integrations">
+                    <summary>{$l.integrations}</summary>
+                    <p>{$l.integrations_intro}</p>
+                    {foreach $integrations as $i}
+                    <div class="mcp-integration-row"><strong>{$i.label|escape:'html'}</strong><span>{if $i.installed}{if $i.version}{$i.version|escape:'html'}{else}{$l.yes}{/if}{else}—{/if}</span></div>
+                    {/foreach}
+                </details>
+                {/if}
+            </section>
+        </div>
     </div>
-
-    <div style="margin:18px 0;padding:14px 16px;border:1px solid #dfe3e8;border-radius:6px;background:#fbfcfd;">
-        <div style="font-weight:bold;margin-bottom:3px;">Граф связей</div>
-        <p style="color:#666;margin:0 0 11px;">Карта того, как связаны элементы сайта: что чем используется,
-            какие ссылки битые и какие элементы никто не использует. Открывается отдельной страницей.</p>
-        <a href="?a=graph&amp;namespace=modxmcp" class="x-btn" style="display:inline-block;padding:8px 16px;cursor:pointer;text-decoration:none;">Открыть граф связей &rarr;</a>
-    </div>
-
-    {if $components || $features}
-    <h3 style="margin:18px 0 6px;">Возможности</h3>
-    <p style="color:#666;margin-top:0;">Выключенные группы не передаются ИИ (экономия токенов) и блокируются на сервере. Изменения применяются автоматически при следующем действии ИИ (переподключение не требуется).</p>
-
-    {if $components}
-    <h4 style="margin:12px 0 4px;color:#555;">Компоненты</h4>
-    <div class="modxmcp-groups" style="margin:2px 0 8px;">
-        {foreach $components as $g}
-        <label style="display:block;margin:4px 0;cursor:pointer;">
-            <input type="checkbox" class="modxmcp-grp" data-group="{$g.key}"{if $g.enabled} checked{/if}> {$g.label} <span style="color:#bbb;">(<code>{$g.key}</code>)</span>
-        </label>
-        {/foreach}
-    </div>
-    {/if}
-
-    {if $features}
-    <h4 style="margin:12px 0 4px;color:#555;">Возможности MODX</h4>
-    <div class="modxmcp-groups" style="margin:2px 0 8px;">
-        {foreach $features as $g}
-        <label style="display:block;margin:4px 0;cursor:pointer;">
-            <input type="checkbox" class="modxmcp-grp" data-group="{$g.key}"{if $g.enabled} checked{/if}> {$g.label} <span style="color:#bbb;">(<code>{$g.key}</code>)</span>
-        </label>
-        {/foreach}
-    </div>
-    {/if}
-
-    <p>
-        <button id="modxmcp-savegroups" class="x-btn" style="padding:8px 16px;cursor:pointer;" disabled>Сохранить возможности</button>
-        <span id="modxmcp-groups-status" style="margin-left:10px;color:#888;"></span>
-    </p>
-    {/if}
-
-    {if $integrations}
-    <h3 style="margin:18px 0 6px;">{$l.integrations}</h3>
-    <p style="color:#666;margin-top:0;">{$l.integrations_intro}</p>
-    <table class="modxmcp-integrations" cellpadding="6" style="border-collapse:collapse;width:100%;margin:6px 0 14px;">
-        {foreach $integrations as $i}
-        <tr>
-            <td style="width:160px;font-weight:bold;">{$i.label}</td>
-            <td style="width:90px;">{if $i.installed}<span style="color:#2e7d32;">✓ {if $i.version}{$i.version}{else}{$l.yes}{/if}</span>{else}<span style="color:#bbb;">—</span>{/if}</td>
-            <td style="color:#666;">{$i.note}</td>
-        </tr>
-        {/foreach}
-    </table>
-    {/if}
-
-    <p style="color:#999;font-size:12px;margin-top:18px;">{$l.settings_hint}</p>
 </div>
