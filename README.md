@@ -13,6 +13,20 @@ The project is based on the original [**modxMCP**](https://github.com/dampilov94
 > The repository name `modx3-mcp`, Node package name, and existing technical identifiers are retained for backward compatibility. The product name shown in documentation and the MODX manager is now **MODX MCP**.
 
 
+## MODX MCP interface
+
+Use the manager dashboard to review the API endpoint, manage token access, configure settings, and control available MCP capabilities. The separate dependency graph shows relationships between MODX elements, broken references, and potentially unused code.
+
+**Manager dashboard**
+
+![MODX MCP manager dashboard in English](docs/images/modxmcp-dashboard-en.png)
+
+**Dependency graph**
+
+![MODX MCP dependency graph with English labels](docs/images/modxmcp-graph-en.png)
+
+*Documentation illustrations rendered from the component UI and test-site graph data. The API hostname is an example and the token is fully masked. The graph screenshot uses English-localized labels for documentation; some graph strings in the current 1.2.2 manager build remain Russian. Images are not evidence of a specific MCP client being connected.*
+
 ## Documentation
 
 | Purpose | English | Русский |
