@@ -39,9 +39,9 @@ Build each transport package on a MODX installation of the matching major versio
 
 **Next-build metadata fix (after v1.2.2):** the shared `_build/transport.documentation.php` converts relative links from README and CHANGELOG into absolute GitHub URLs **only inside package metadata**. The source Markdown files remain unchanged. A PHP contract test checks the links, and two temporary MODX 2/3 archives were built to verify the manifests. The already published v1.2.2 assets do **not** contain this change; it is for the next release.
 
-## Next patch: 1.2.3 platform build
+## Version 1.2.3 platform build (2026-10-12)
 
-Both MODX 2 and MODX 3 builds now transform repository-relative README and CHANGELOG links **only in transport package metadata**, pinning links and images to the package version tag instead of the MODX manager's current path. The normal GitHub Markdown stays unchanged. Both platform ZIPs have been built and their manifests inspected during release preparation; the published stable release remains 1.2.2 until v1.2.3 is tagged and published.
+Both MODX 2 and MODX 3 builds transform repository-relative README and CHANGELOG links **only in transport package metadata**, pinning links and images to the package version tag instead of the MODX manager's current path. The source Markdown remains unchanged. Both platform ZIPs passed integrity and manifest checks, installed on authorized test sites, preserved all 16 settings and the API token, and passed authenticated HTTP read-only smoke tests (193 server actions).
 
 ## Current release: 1.2.2 platform build
 

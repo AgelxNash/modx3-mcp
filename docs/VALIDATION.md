@@ -2,9 +2,11 @@
 
 # Connector validation status
 
-## 1.2.3 release preparation (2026-10-12)
+## Stable 1.2.3 release validation (2026-10-12)
 
-The 1.2.3 source retains the unchanged 193-action server contract (192 public MCP tools). Both platform transport ZIPs were built using the shared relative-to-absolute documentation-link converter; ZIP integrity and the embedded version-pinned Russian/English README/CHANGELOG/image URLs were verified. The standalone transport-documentation PHP regression test passed, as did dual-platform staging, portability, manager-layout and client/server contract checks. **Not yet a published or installed release** at this stage. The prior v1.2.2 installation verification remains below.
+The **[v1.2.3](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.3)** patch retains 193 server actions (81 reads / 112 mutations), of which 192 are public MCP tools. The only package behavior change is resolving relative README and CHANGELOG links in transport metadata to version-pinned GitHub URLs. Both ZIPs passed integrity checks and manifest verification for English/Russian docs, cross-language links and images. The transport-documentation PHP test and responsive manager/graph tests are included in GitHub Actions; the full four-job CI run succeeded.
+
+**Live transport upgrade (test sites only):** installed `modx2mcp-1.2.3-pl.transport.zip` on MODX 2.8.9-pl and `modx3mcp-1.2.3-pl.transport.zip` on MODX 3.2.4-pl, starting from 1.2.2. Prior to installation, each component's files and all 16 settings were backed up. Both package installations succeeded; all **16/16 settings, including the existing API token, matched their pre-upgrade snapshots**, and health GET returned `version=1.2.3` with the appropriate platform variant. Authenticated `list_actions` yielded 193 server actions, `system_info` succeeded, the read-only smoke completed, and both front pages returned HTTP 200. **Neither production sites nor credentials were changed**; no destructive regression cycle or manager-button E2E is claimed. The smoke checker was corrected from a stale 192-server-action expectation to 193; 192 still correctly denotes the public MCP tools. Prior 1.2.2 checks are retained below.
 
 ## Published release 1.2.2 — validation (2026-10-12)
 
