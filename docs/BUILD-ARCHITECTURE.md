@@ -37,6 +37,10 @@ python3 _build/prepare-release.py --platform modx2 --output /tmp/modxmcp-modx2
 
 Build each transport package on a MODX installation of the matching major version.
 
+## Version 1.2.2 platform build
+
+The two platform-specific transports retain `MODX2MCP` / `MODX3MCP` package identities and a shared `modxmcp` namespace. The MODX 2 staging overlay replaces both manager controllers (`index`, `graph`) and the new `gettoken3` / `savesettings3` processors with `modProcessor`-compatible variants. The responsive dashboards, graph CSS/JS and lexicons are shared. The complete source contract is 193 actions (192 public tools). Previous release 1.2.1 validation notes below remain historical.
+
 ## Version 1.2.1 status
 
 Version 1.2.1 is the current shared-source stable line for MODX 2 and MODX 3. Its contract contains **192/192** server actions: 81 read-only and 111 mutations. Compared with v1.1.0 it adds 10 actions plus Runtime CAS/stale-state protection.

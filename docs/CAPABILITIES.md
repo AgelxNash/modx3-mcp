@@ -2,7 +2,7 @@
 
 **English** | [Русский](CAPABILITIES.ru.md) · [Installation](INSTALL.md) · [API reference](API.md)
 
-**MODX MCP 1.2.1 · 191 public tools · 19 functional groups · MODX Revolution 2.8.x / 3.x**
+**MODX MCP 1.2.2 · 192 public tools · 19 functional groups · MODX Revolution 2.8.x / 3.x**
 
 MODX MCP gives an AI-capable MCP client named operations for working with MODX data and elements, rather than requiring every task to be expressed as raw SQL or filesystem commands. It supports site inspection, content and code editing, TV values, packages, access administration, and selected third-party extras. The actual tool list depends on the installed build and enabled capabilities.
 
@@ -14,7 +14,7 @@ This guide answers **“What can I do with MODX MCP?”**. For the complete fiel
 
 | Group | Tools |
 | --- | ---: |
-| [Elements and resources](#elements-and-resources) | 14 |
+| [Elements and resources](#elements-and-resources) | 15 |
 | [Resource TVs](#resource-tvs) | 4 |
 | [TV field types](#tv-field-types) | 2 |
 | [System settings](#system-settings) | 5 |
@@ -33,7 +33,7 @@ This guide answers **“What can I do with MODX MCP?”**. For the complete fiel
 | [Namespaces](#namespaces) | 4 |
 | [Lexicon and translations](#lexicon-and-translations) | 4 |
 | [Maintenance and diagnostics](#maintenance-and-diagnostics) | 13 |
-| **Total** | **191** |
+| **Total** | **192** |
 
 ## Elements and resources
 
@@ -44,6 +44,7 @@ Manage pages, templates, chunks, snippets, plugins, TVs, and categories as MODX 
 | `modx_list_elements` | List MODX elements of a type (id + name). | Read |
 | `modx_make_static` | Convert a chunk/snippet/template/plugin to a static file under core/elements/ (writes the file, sets static=1 + source=Filesystem). | High impact |
 | `modx_get_element` | Read a MODX element (returns its fields + full code). | Read |
+| `modx_update_element_property` | Safely change one existing default property with an expected-value CAS check; never replace code or other properties. | Changes site |
 | `modx_update_element` | Update a MODX element by REPLACING its whole content (send the complete new content). | High impact |
 | `modx_create_element` | Create a new MODX element. | High impact |
 | `modx_delete_element` | Delete a MODX element. Run with dry_run:true FIRST — it returns what would be deleted plus where the element is still referenced (for resources: child-resource count), without deleting. Review that before the real delete. | High impact |

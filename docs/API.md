@@ -1,10 +1,10 @@
 # MODX MCP — API reference
 
-**Version 1.2.1 · 10 October 2026 · 191 public MCP tools**
+**Version 1.2.2 · 12 October 2026 · 192 public MCP tools**
 
 **English** | [Русский](API.ru.md) · [Installation](INSTALL.md) · [Capabilities](CAPABILITIES.md) · [Security](SECURITY.md)
 
-Technical reference for developers and MCP agents using **MODX Revolution 2.8.x or 3.x**. The 191 public tools belong to the standard Node.js MCP client and use the `modx_` prefix. The PHP server exposes a 192nd action, `get_capabilities`, to negotiate capabilities internally. An installed site may enable fewer tools due to its version, settings, or optional add-ons. No third-party orchestration system is required.
+Technical reference for developers and MCP agents using **MODX Revolution 2.8.x or 3.x**. The 192 public tools belong to the standard Node.js MCP client and use the `modx_` prefix. The PHP server exposes a 193rd action, `get_capabilities`, to negotiate capabilities internally. An installed site may enable fewer tools due to its version, settings, or optional add-ons. No third-party orchestration system is required.
 
 ## Connecting an MCP client
 
@@ -15,7 +15,7 @@ Install the MODX transport package for your platform, then configure a compatibl
   "mcpServers": {
     "modx": {
       "command": "npx",
-      "args": ["-y", "github:rumata-estor/modx3-mcp#v1.2.1"],
+      "args": ["-y", "github:rumata-estor/modx3-mcp#v1.2.2"],
       "env": {
         "MODX_MCP_SITE_URL": "https://example.com/assets/components/modxmcp/api.php",
         "MODX_MCP_TOKEN": "YOUR_PRIVATE_SITE_TOKEN"
@@ -56,7 +56,7 @@ The tables reproduce the **declared MCP input schema**, including required field
 
 ## Tool catalog
 
-## 1. Elements and resources (14)
+## 1. Elements and resources (15)
 
 ### `modx_list_elements`
 
@@ -90,6 +90,20 @@ Read a MODX element (returns its fields + full code). For a large chunk/snippet/
 | `type` | string | yes | Allowed: chunk, snippet, template, resource, tv, category, plugin |
 | `name` | string | no | — |
 | `id` | number | no | — |
+
+### `modx_update_element_property`
+
+Change **only one existing default property** of a snippet, chunk, plugin or template; code and other property definitions are preserved. CAS validation rejects an update if `expected_value` no longer matches. `_runtime_preconditions` is reserved for internal Site Agent Runtime state checks.
+
+| Parameter | Type | Required | Notes and allowed values |
+| --- | --- | :---: | --- |
+| `type` | string | yes | `snippet`, `chunk`, `plugin`, `template` |
+| `id` | number | no | Element id or use `name`. |
+| `name` | string | no | Element name if no id. |
+| `property_name` | string | yes | Name of the existing property. |
+| `expected_value` | string / number / boolean / null | yes | Required CAS expected current value. |
+| `value` | string / number / boolean / null | yes | Replacement property value. |
+| `_runtime_preconditions` | object | no | Internal runtime CAS preconditions. |
 
 ### `modx_update_element`
 
@@ -2108,4 +2122,4 @@ If an action is missing, use `modx_list_actions`, inspect disabled capability gr
 - [PHP action catalog](https://github.com/rumata-estor/modx3-mcp/blob/main/core/components/modxmcp/model/modxmcp.class.php)
 - [HTTP endpoint](https://github.com/rumata-estor/modx3-mcp/blob/main/core/components/modxmcp/endpoint/api.common.php)
 
-This reference describes the published API 1.2.1 contract; exact availability depends on the installed build.
+This reference describes the published API 1.2.2 contract; exact availability depends on the installed build.

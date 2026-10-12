@@ -2,6 +2,17 @@
 
 # MODX MCP — Changelog
 
+## 1.2.2 (2026-10-12)
+
+Maintenance patch for MODX 2.8.x and 3.x:
+
+- Responsive two-column manager dashboard: readable fields, endpoint copy, saved capability toggles and settings controls.
+- Current API token stays masked in the initial HTML; authorized managers may show/copy it through a permission-checked, non-cached endpoint. Token rotation is deliberate and warns about disconnecting existing clients.
+- Dependency graph receives matching layout, typography, toolbars, responsive filters/canvas and visible in-panel scrolling within MODX manager.
+- Platform overlays add the MODX 2-compatible manager controllers and new processors.
+- Consolidates earlier source changes: CAS v2 transactional resource-TV writes and CAS on a single element property (`update_element_property`). **192 public MCP tools** + internal `get_capabilities` = **193 server actions** (81 read / 112 mutations).
+- Both platform packages keep their own identities (`MODX2MCP`, `MODX3MCP`), shared `modxmcp` namespace and existing API token on normal upgrade. No automatic token regeneration.
+
 ## 1.2.1 (2026-10-10)
 
 - Harden client transport: require a valid HTTPS URL, reject embedded URL credentials, disable redirects and apply request timeouts.

@@ -914,21 +914,31 @@ Ext.onReady(function () {
             relayout();
         });
     });
-    // Size the whole screen to the space the manager actually gives us. Guessing the chrome
-    // height with calc(100vh - N) clipped the bottom of the panel — and because the element was
-    // exactly viewport-tall there was nothing to scroll to reach it. Measure instead: never
-    // taller than what is left below our top edge, and never taller than the content region.
+    // ExtJS may clip the manager tab with overflow:hidden; the document itself
+    // then cannot scroll. Give this graph its own visible scrollable viewport,
+    // measured from whichever clipping ancestor is closest to the graph.
+    // The graph body has a useful minimum size even when the viewport is short;
+    // in that case the outer #mcpg scroll area exposes the remaining content.
     function fitShell() {
         var rect = root.getBoundingClientRect();
-        var avail = window.innerHeight - rect.top - 12;
-        var host = document.getElementById('modx-content') || root.parentElement;
-        if (host && host !== root) {
-            var hr = host.getBoundingClientRect();
-            var inHost = hr.bottom - rect.top - 8;
-            if (inHost > 240) { avail = Math.min(avail, inHost); }
+        var bottom = window.innerHeight;
+        var host = root.parentElement;
+        while (host && host !== document.body && host !== document.documentElement) {
+            var style = window.getComputedStyle(host);
+            if (/(hidden|clip|auto|scroll)/.test(style.overflowY) ||
+                /(hidden|clip|auto|scroll)/.test(style.overflow)) {
+                var box = host.getBoundingClientRect();
+                if (box.height > 0 && box.bottom > rect.top) {
+                    bottom = Math.min(bottom, box.bottom);
+                }
+            }
+            host = host.parentElement;
         }
-        if (!isFinite(avail) || avail < 240) { avail = 620; }
-        root.style.height = Math.max(420, Math.round(avail)) + 'px';
+        var available = Math.floor(bottom - rect.top - 8);
+        if (isFinite(available) && available >= 170) {
+            root.style.height = available + 'px';
+            root.style.maxHeight = available + 'px';
+        }
     }
 
     // Lane/anchor positions live in WORLD coordinates and are deliberately not recomputed here:

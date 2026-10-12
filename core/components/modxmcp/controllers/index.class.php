@@ -35,11 +35,27 @@ class ModxmcpIndexManagerController extends modExtraManagerController {
             'connector_url'      => $assetsUrl . 'connector.php',
             'confirm_regenerate' => $this->modx->lexicon('modxmcp_cmp_confirm_regenerate'),
             'regenerate_failed'  => $this->modx->lexicon('modxmcp_cmp_regenerate_failed'),
-        ), JSON_UNESCAPED_UNICODE);
+            'ui' => array(
+                'show' => $this->modx->lexicon('modxmcp_cmp_ui_show'),
+                'hide' => $this->modx->lexicon('modxmcp_cmp_ui_hide'),
+                'saved' => $this->modx->lexicon('modxmcp_cmp_ui_saved'),
+                'error' => $this->modx->lexicon('modxmcp_cmp_ui_error'),
+                'copied' => $this->modx->lexicon('modxmcp_cmp_ui_copied'),
+                'copy_failed' => $this->modx->lexicon('modxmcp_cmp_ui_copy_failed'),
+                'token_error' => $this->modx->lexicon('modxmcp_cmp_ui_token_error'),
+                'token_shown' => $this->modx->lexicon('modxmcp_cmp_ui_token_shown'),
+                'token_hidden' => $this->modx->lexicon('modxmcp_cmp_ui_token_hidden'),
+                'new_token' => $this->modx->lexicon('modxmcp_cmp_ui_new_token'),
+            ),
+        ), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         $this->addHtml('<script type="text/javascript">var Modxmcp = ' . $cfg . ';</script>');
         // Cache-bust home.js by its mtime so browsers always load the current version.
         $jsFile = $this->modx->getOption('assets_path') . 'components/modxmcp/js/home.js';
         $ver = file_exists($jsFile) ? filemtime($jsFile) : '1';
+        // The responsive dashboard stylesheet is isolated under .modxmcp-ui.
+        $cssFile = $this->modx->getOption('assets_path') . 'components/modxmcp/css/dashboard.css';
+        $cssVer = file_exists($cssFile) ? filemtime($cssFile) : '1';
+        $this->addCss($assetsUrl . 'css/dashboard.css?v=' . $cssVer);
         $this->addJavascript($assetsUrl . 'js/home.js?v=' . $ver);
     }
 
@@ -96,6 +112,12 @@ class ModxmcpIndexManagerController extends modExtraManagerController {
             'intro', 'endpoint', 'enabled', 'yes', 'no', 'enable_hint', 'token', 'token_set',
             'token_notset', 'auto_static', 'audit_log', 'package_install', 'on', 'off',
             'regenerate', 'new_token', 'settings_hint', 'integrations', 'integrations_intro',
+            'ui_subtitle', 'ui_enabled', 'ui_disabled', 'ui_connection', 'ui_connection_help',
+            'ui_endpoint', 'ui_copy', 'ui_show', 'ui_hide', 'ui_token_help', 'ui_regenerate_help',
+            'ui_settings', 'ui_settings_help', 'ui_auto_static_desc', 'ui_audit_desc',
+            'ui_save_settings', 'ui_capabilities', 'ui_capabilities_help', 'ui_components',
+            'ui_modx_features', 'ui_save_capabilities', 'ui_tools', 'ui_graph',
+            'ui_graph_help', 'ui_open_graph',
         );
         $l = array();
         foreach ($labelKeys as $k) {
