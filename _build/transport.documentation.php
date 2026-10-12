@@ -7,14 +7,17 @@
  * package installer renders package metadata under the manager's own URL:
  * e.g. (CHANGELOG.ru.md) would otherwise navigate to /manager/CHANGELOG.ru.md.
  *
- * Link to the live documentation branch; a newly built package can be tested
- * before the next numbered GitHub release exists. Never embed website URLs,
- * user tokens or local filesystem paths.
+ * Pin documented links to a release tag when PKG_VERSION is defined by the
+ * builder, so a later main-branch change cannot silently alter old releases.
+ * Without a release version, local standalone tests use main.
+ * Never embed site URLs, tokens or local filesystem paths.
  */
 function modxmcpTransportDocumentation($markdown, $documentPath)
 {
-    $base = 'https://github.com/rumata-estor/modx3-mcp/blob/main/';
-    $raw = 'https://raw.githubusercontent.com/rumata-estor/modx3-mcp/main/';
+    $version = defined('PKG_VERSION') ? (string) PKG_VERSION : '';
+    $ref = preg_match('/^[0-9]+\.[0-9]+\.[0-9]+$/', $version) ? 'v' . $version : 'main';
+    $base = 'https://github.com/rumata-estor/modx3-mcp/blob/' . $ref . '/';
+    $raw = 'https://raw.githubusercontent.com/rumata-estor/modx3-mcp/' . $ref . '/';
 
     return preg_replace_callback(
         '~\\]\\(([^)\\s]+)(\\s+"[^"]*")?\\)~u',

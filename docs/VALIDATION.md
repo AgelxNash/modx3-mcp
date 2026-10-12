@@ -2,6 +2,12 @@
 
 # Connector validation status
 
+## Stable 1.2.3 release validation (2026-10-12)
+
+The **[v1.2.3](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.3)** patch retains 193 server actions (81 reads / 112 mutations), of which 192 are public MCP tools. The only package behavior change is resolving relative README and CHANGELOG links in transport metadata to version-pinned GitHub URLs. Both ZIPs passed integrity checks and manifest verification for English/Russian docs, cross-language links and images. The transport-documentation PHP test and responsive manager/graph tests are included in GitHub Actions; the full four-job CI run succeeded.
+
+**Live transport upgrade (test sites only):** installed `modx2mcp-1.2.3-pl.transport.zip` on MODX 2.8.9-pl and `modx3mcp-1.2.3-pl.transport.zip` on MODX 3.2.4-pl, starting from 1.2.2. Prior to installation, each component's files and all 16 settings were backed up. Both package installations succeeded; all **16/16 settings, including the existing API token, matched their pre-upgrade snapshots**, and health GET returned `version=1.2.3` with the appropriate platform variant. Authenticated `list_actions` yielded 193 server actions, `system_info` succeeded, the read-only smoke completed, and both front pages returned HTTP 200. **Neither production sites nor credentials were changed**; no destructive regression cycle or manager-button E2E is claimed. The smoke checker was corrected from a stale 192-server-action expectation to 193; 192 still correctly denotes the public MCP tools. Prior 1.2.2 checks are retained below.
+
 ## Published release 1.2.2 — validation (2026-10-12)
 
 **Stable release:** [v1.2.2](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.2), for MODX 2.8.x and 3.x. The published contract contains **193 server actions** (81 reads and 112 mutations), of which **192 are public MCP tools**. This release includes transactional resource-TV CAS v2, element-property CAS, and the redesigned manager dashboard and dependency graph.

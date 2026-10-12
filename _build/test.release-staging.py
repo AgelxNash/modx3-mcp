@@ -7,7 +7,7 @@ import sys
 
 root = Path(__file__).resolve().parents[1]
 errors = []
-expected_version = '1.2.2'
+expected_version = '1.2.3'
 expected_packages = {
     'modx2': 'MODX2MCP',
     'modx3': 'MODX3MCP',
@@ -49,6 +49,11 @@ with tempfile.TemporaryDirectory() as td:
         build_config = (out / '_build/build.config.php').read_text(
             encoding='utf-8'
         )
+        # list_actions exposes all 193 server actions, including the internal
+        # get_capabilities action. The MCP client exposes 192 public tools.
+        smoke_script = (out / '_build/smoke.endpoint.php').read_text(encoding='utf-8')
+        if 'if ($actionCount !== 193)' not in smoke_script:
+            errors.append(f'{platform}: HTTP smoke test expects the wrong server action count')
 
         if (out / 'core/components/modxmcp/legacy').exists():
             errors.append(
@@ -102,5 +107,5 @@ if errors:
 
 print(
     'RELEASE_STAGING_OK '
-    'modx2=MODX2MCP/1.2.2 modx3=MODX3MCP/1.2.2'
+    'modx2=MODX2MCP/1.2.3 modx3=MODX3MCP/1.2.3'
 )
