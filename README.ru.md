@@ -35,6 +35,7 @@
 | Узнать, что умеет MODX MCP | [Справочник возможностей](docs/CAPABILITIES.ru.md) | [Capabilities](docs/CAPABILITIES.md) |
 | Разрабатывать интеграции | [Технический справочник API: 192 инструмента](docs/API.ru.md) | [API reference](docs/API.md) |
 | Безопасно эксплуатировать | [Безопасность и модель доверия](docs/SECURITY.ru.md) | [Security](docs/SECURITY.md) |
+| Системные настройки | [Все 16 настроек](docs/SETTINGS.ru.md) | [System settings](docs/SETTINGS.md) |
 
 Дополнительные документы: [разработка](DEVELOPMENT.ru.md), [архитектура сборки](docs/BUILD-ARCHITECTURE.ru.md), [результаты проверки](docs/VALIDATION.ru.md).
 
