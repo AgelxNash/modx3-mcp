@@ -13,6 +13,9 @@ assert 'token_full' not in tpl, 'Never inject unmasked API token into HTML'
 assert 'token_preview' in tpl
 assert 'mcp-layout' in tpl and 'grid-template-columns:minmax(0,1fr) minmax(0,1fr)' in css
 assert '@media(max-width:1030px)' in css and '@media(max-width:630px)' in css
+assert 'overflow-y:scroll' in css and 'scrollbar-gutter:stable' in css
+assert 'fitDashboardScroll' in js and "window.addEventListener('resize', fitDashboardScroll)" in js
+assert 'tabindex="0"' in tpl
 for key in ['mcp-show-token','mcp-copy-token','mcp-copy-endpoint','mcp-save-settings','modxmcp-savegroups','modxmcp-regenerate']:
     assert f'id="{key}"' in tpl and key in js, key
 assert "request('gettoken3'" in js

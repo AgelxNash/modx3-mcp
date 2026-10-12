@@ -1,4 +1,4 @@
-.modxmcp-ui{max-width:1460px;margin:0 auto;padding:22px 24px 36px;box-sizing:border-box;color:#273441;font-size:15px;line-height:1.5}
+.modxmcp-ui{max-width:1460px;margin:0 auto;padding:22px 24px 36px;box-sizing:border-box;color:#273441;font-size:15px;line-height:1.5;max-height:calc(100vh - 24px);overflow-x:hidden;overflow-y:scroll;overscroll-behavior-y:contain;scrollbar-gutter:stable}
 .modxmcp-ui *{box-sizing:border-box}
 .modxmcp-ui .mcp-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px}
 .modxmcp-ui .mcp-head h2{font-size:28px;font-weight:650;margin:0 0 5px;line-height:1.25;color:#243442}
@@ -54,3 +54,9 @@
 .modxmcp-ui .mcp-integration-row span{color:#65737f;flex-shrink:0}
 @media(max-width:1030px){.modxmcp-ui .mcp-layout{grid-template-columns:minmax(0,1fr)}.modxmcp-ui{max-width:850px}}
 @media(max-width:630px){.modxmcp-ui{padding:15px 11px 30px}.modxmcp-ui .mcp-panel{padding:18px 16px}.modxmcp-ui .mcp-check-grid{grid-template-columns:minmax(0,1fr)}.modxmcp-ui .mcp-input-line input{flex-basis:100%}.modxmcp-ui .mcp-head h2{font-size:24px}}
+
+/* The MODX 3 manager may clip CMP content inside a fixed ExtJS panel.
+   Keep dashboard scrolling inside its own viewport instead of relying on body scroll. */
+.modxmcp-ui::-webkit-scrollbar{width:11px}
+.modxmcp-ui::-webkit-scrollbar-thumb{border-radius:8px;border:2px solid #f3f6f8;background:#aabac7}
+.modxmcp-ui::-webkit-scrollbar-track{background:#f3f6f8}

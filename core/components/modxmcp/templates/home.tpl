@@ -1,4 +1,4 @@
-<div class="modxmcp-ui">
+<div class="modxmcp-ui" tabindex="0">
     <header class="mcp-head">
         <div>
             <h2>MODX MCP</h2>

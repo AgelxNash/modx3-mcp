@@ -6,6 +6,37 @@ Ext.onReady(function () {
     var $ = function (id) { return document.getElementById(id); };
     var timeoutId = null;
 
+    // ExtJS manager panels often clip overflow and disable document scrolling.
+    // Measure the actual visible bounds of the nearest clipping parent, then
+    // make this dashboard its own keyboard- and wheel-scrollable region.
+    function fitDashboardScroll() {
+        var panel = document.querySelector('.modxmcp-ui');
+        if (!panel) { return; }
+        var top = panel.getBoundingClientRect().top;
+        var bottom = window.innerHeight;
+        var parent = panel.parentElement;
+        while (parent && parent !== document.body && parent !== document.documentElement) {
+            var style = window.getComputedStyle(parent);
+            if (/(hidden|clip|auto|scroll)/.test(style.overflowY) ||
+                /(hidden|clip|auto|scroll)/.test(style.overflow)) {
+                var box = parent.getBoundingClientRect();
+                if (box.height > 0 && box.bottom > top) {
+                    bottom = Math.min(bottom, box.bottom);
+                }
+            }
+            parent = parent.parentElement;
+        }
+        var space = Math.floor(bottom - top - 8);
+        if (space > 120) {
+            panel.style.height = space + 'px';
+            panel.style.maxHeight = space + 'px';
+        }
+    }
+    fitDashboardScroll();
+    window.addEventListener('resize', fitDashboardScroll);
+    // MODX may finish laying out its ExtJS tabs after the CMP DOM becomes ready.
+    window.setTimeout(fitDashboardScroll, 300);
+
     function report(id, message, error) {
         var item = $(id);
         if (item) { item.textContent = message || ''; item.setAttribute('data-error', error ? 'true' : 'false'); }
