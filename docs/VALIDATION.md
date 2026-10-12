@@ -6,6 +6,16 @@
 
 Current source integrates element property CAS and resource TV CAS v2 on MODX 2 and MODX 3: 193 actions (81 reads / 112 mutations). Historical stable release 1.2.1 has 192 actions. These source changes are not a newly published package.
 
+### Post-merge validation (2026-10-12, authorized test sites)
+
+- PHP 8.2.32 syntax validation: 253 PHP source/test files, no syntax errors.
+- `test.modular-core.php`: 193 registered actions; `test.resource-tv-cas.php`, `test.security-hardening.php`, and platform mapping pass.
+- MODX 2.8.9-pl and MODX 3.2.4-pl: live HTTPS MCP `get_site_state` returns `precondition_version=2` and `atomic_preconditions=true`.
+- On **both** installations, isolated unpublished TV fixtures passed authorized CAS write, rejection of stale site revision, rejection of mismatched expected TV value, readback, CAS-guarded restoration and fixture cleanup.
+- Seven element types (chunk, snippet, template, resource, TV, category, plugin) passed create/update/dry-run/delete parity between modular and legacy paths on each installation. No leftover temporary TV/resource fixtures or orphaned TV links/values were found.
+- This verifies development source directly staged on test installations; it is **not** a new transport-package release. The new `update_element_property` operation passed source-contract validation, but a dedicated live property-CAS test was **not** run. Client-side credential synchronization is outside this verification.
+
+
 > User documentation: [installation](INSTALL.md), [capabilities](CAPABILITIES.md), [API reference](API.md), [security](SECURITY.md).
 
 Stable-release 1.2.0 validation: 2026-10-07. Static, processor-compatibility, Runtime-CAS and platform transport checks were repeated for the 192-action release contract.
