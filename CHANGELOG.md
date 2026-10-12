@@ -10,6 +10,13 @@
 - Clamp list limits (including zero), install disabled by default, mask the token in the manager, and ignore local backup folders in Git.
 - Apply the same server-side protections to MODX 2 and MODX 3.
 
+## 1.2.1-beta1 (unreleased, test-only)
+
+- Resource TV value writes now enforce connector-side site revision CAS and expected TV values under the same mutation lock on MODX 2 and MODX 3.
+- Reject unknown/unassigned TV keys before updating; apply multiple TV values transactionally.
+- Advertise precondition_version=2 for Runtime feature detection; the shared MCP action count remains 193.
+- This beta is for isolated test installations only, not a stable or public release.
+
 ## 1.2.0 (2026-10-07)
 
 - MODX 2 distribution uses its own external package identity `MODX2MCP` / `modx2mcp-1.2.0-pl.transport.zip`; the internal `modxmcp` namespace, paths, settings and API remain shared.
