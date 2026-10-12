@@ -37,16 +37,16 @@ python3 _build/prepare-release.py --platform modx2 --output /tmp/modxmcp-modx2
 
 Build each transport package on a MODX installation of the matching major version.
 
-## Version 1.2.2 platform build
+## Current release: 1.2.2 platform build
 
-The two platform-specific transports retain `MODX2MCP` / `MODX3MCP` package identities and a shared `modxmcp` namespace. The MODX 2 staging overlay replaces both manager controllers (`index`, `graph`) and the new `gettoken3` / `savesettings3` processors with `modProcessor`-compatible variants. The responsive dashboards, graph CSS/JS and lexicons are shared. The complete source contract is 193 actions (192 public tools). Previous release 1.2.1 validation notes below remain historical.
+The two platform-specific transports retain `MODX2MCP` / `MODX3MCP` package identities and a shared `modxmcp` namespace. The MODX 2 staging overlay replaces both manager controllers (`index`, `graph`) and the new `gettoken3` / `savesettings3` processors with `modProcessor`-compatible variants. The responsive dashboards, graph CSS/JS and lexicons are shared. The current **published** v1.2.2 contract has 193 server actions (81 reads / 112 mutations), including 192 public MCP tools and the internal `get_capabilities` action. The two platform-specific v1.2.2 transport archives were built, installed and smoke-tested on authorized MODX 2.8.9-pl and MODX 3.2.4-pl test sites. Previous release 1.2.1 notes below are historical.
 
-## Version 1.2.1 status
+## Historical validation: version 1.2.1
 
-Version 1.2.1 is the current shared-source stable line for MODX 2 and MODX 3. Its contract contains **192/192** server actions: 81 read-only and 111 mutations. Compared with v1.1.0 it adds 10 actions plus Runtime CAS/stale-state protection.
+At its release, v1.2.1 supported both MODX generations with **192/192** server actions: 81 reads and 111 mutations. These are **historical 1.2.1 results**, not the current 1.2.2 contract. Relative to v1.1.0, the 1.2.0 line added 10 actions and Runtime CAS/stale-state protection.
 
 - v1.2.1 modular action coverage: **192/192**;
-- MODX 3.2.4-pl: complete 14-suite live regression and transport release-smoke passed;
+- MODX 3.2.4-pl: the complete 14-suite live regression belongs to the historical v1.2.0 validation; v1.2.1 also passed its own transport release-smoke;
 - MODX 3 processor compatibility: passed against 3.2.2-pl, 3.2.4-pl and current 3.x (113 referenced processor files);
 - MODX 2.8.9-pl: transport release-smoke, 81-action read parity and the core/runtime mutation matrix passed; positive MIGX lifecycle is skipped because MIGX is not installed on that sandbox;
 - Runtime CAS/stale-state smoke passed on both supported MODX generations;

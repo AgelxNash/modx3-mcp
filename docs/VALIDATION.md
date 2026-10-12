@@ -2,16 +2,17 @@
 
 # Connector validation status
 
-## Patch 1.2.2 validation
+## Published release 1.2.2 — validation (2026-10-12)
 
-This patch combines previously validated CAS source (see below) and the MODX 2/3 manager-interface update. Staged platform build checks require both CSS files, all manager templates, and platform-correct processors for token retrieval and allowlisted settings. Responsive browser geometry tested at 1500, 900 and 480 px on the graph; manager dashboard scrolling also tested. The graph backend returned a successful summary. PHP syntax, package build and full transport installation require separate release verification; do not infer that an earlier 1.2.1 package-install cycle verifies the new artifact.
+**Stable release:** [v1.2.2](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.2), for MODX 2.8.x and 3.x. The published contract contains **193 server actions** (81 reads and 112 mutations), of which **192 are public MCP tools**. This release includes transactional resource-TV CAS v2, element-property CAS, and the redesigned manager dashboard and dependency graph.
 
+Both platform transport ZIPs were built with PHP 8.2.32 and passed ZIP integrity checks. Each archive includes the dashboard/graph templates, CSS and JavaScript, plus its platform-compatible manager controllers and processors. Both packages were installed on authorized MODX **2.8.9-pl** and **3.2.4-pl** test sites: MCP authentication and read calls continued working, all 16 component settings matched their pre-install digests, and both front pages returned HTTP 200. No production sites were changed. Responsive graph layouts were browser-tested at widths of 1500, 900 and 480 pixels; dashboard scrolling and a graph summary response were also verified.
 
-Transport verification for 1.2.2: both ZIP packages built on PHP 8.2.32 and passed ZIP integrity checks. Both packages installed successfully on authorized MODX 2.8.9 and MODX 3.2.4 TEST sites. API authentication and read access remained available; all 16 component settings matched their pre-install values by digest, and both front pages returned HTTP 200. Both archives include the graph and manager templates and CSS. No production installation was performed. Authorized-manager button clicks still require in-session review; a separate live element-property CAS cycle has not yet been run.
+**Scope limit:** the user's visual review covered the MODX 3 dashboard and graph; automated clicks for every manager action and a dedicated live element-property CAS write cycle have **not** been claimed as completed. These checks should not be confused with the successful transport installations.
 
-## Pre-release source verification (2026-10-12)
+## Historical pre-release source verification (2026-10-12)
 
-Current source integrates element property CAS and resource TV CAS v2 on MODX 2 and MODX 3: 193 actions (81 reads / 112 mutations). Historical stable release 1.2.1 has 192 actions. These source changes are not a newly published package.
+Before publishing v1.2.2, the source tree already integrated element-property CAS and resource-TV CAS v2 on MODX 2 and MODX 3 (193 server actions). The checks below describe **that earlier source-staging phase**. The functionality was subsequently included in the published v1.2.2 packages.
 
 ### Post-merge validation (2026-10-12, authorized test sites)
 
@@ -20,7 +21,7 @@ Current source integrates element property CAS and resource TV CAS v2 on MODX 2 
 - MODX 2.8.9-pl and MODX 3.2.4-pl: live HTTPS MCP `get_site_state` returns `precondition_version=2` and `atomic_preconditions=true`.
 - On **both** installations, isolated unpublished TV fixtures passed authorized CAS write, rejection of stale site revision, rejection of mismatched expected TV value, readback, CAS-guarded restoration and fixture cleanup.
 - Seven element types (chunk, snippet, template, resource, TV, category, plugin) passed create/update/dry-run/delete parity between modular and legacy paths on each installation. No leftover temporary TV/resource fixtures or orphaned TV links/values were found.
-- This verifies development source directly staged on test installations; it is **not** a new transport-package release. The new `update_element_property` operation passed source-contract validation, but a dedicated live property-CAS test was **not** run. Client-side credential synchronization is outside this verification.
+- At this stage, development source was staged directly on test installations; **the transport packages had not yet been built**. They were subsequently published as v1.2.2 (see above). `update_element_property` passed source-contract validation, but a dedicated live property-CAS test was **not** run. Client-side credential synchronization was outside this phase.
 
 
 > User documentation: [installation](INSTALL.md), [capabilities](CAPABILITIES.md), [API reference](API.md), [security](SECURITY.md).
@@ -43,11 +44,11 @@ One source tree contains a shared modular core plus platform adapters:
 - modular `Tools/`
 - shared endpoint `endpoint/api.common.php`
 
-The modular registry now owns the complete public action contract: 81 read-only actions and 111 mutation actions, 192/192 total. The legacy dispatcher remains only as a compatibility/reference layer; normal requests are handled by the modular runtime.
+In the **current 1.2.2 runtime**, the modular registry contains **193/193 server actions** (81 reads and 112 mutations), including the internal `get_capabilities` action; the MCP client publicly exposes 192 tools. The legacy dispatcher remains only as a compatibility/reference layer; normal requests are handled by the modular runtime.
 
-## 1.2.0 release readiness
+## Historical 1.2.0 release readiness
 
-Version 1.2.0 is the current shared-source MODX 2 / MODX 3 stable release. Both MODX 2.8.9-pl and MODX 3.2.4-pl completed dedicated transport release-smoke cycles and the 81-action live read-parity matrix. MODX 3.2.4-pl additionally completed the complete 14-suite live regression. On MODX 2 the positive MIGX lifecycle is not runnable because MIGX is absent; its positive 3/3 lifecycle passed on MODX 3 and the MODX 2 absence/static contracts remain covered.
+For the **historical 1.2.0 release**, both MODX 2.8.9-pl and MODX 3.2.4-pl completed dedicated transport release-smoke cycles and the 81-action live read-parity matrix. MODX 3.2.4-pl additionally completed the complete 14-suite live regression. On MODX 2 the positive MIGX lifecycle is not runnable because MIGX is absent; its positive 3/3 lifecycle passed on MODX 3 and the MODX 2 absence/static contracts remain covered.
 
 ## 1.2.0 modular read-only coverage
 
@@ -135,17 +136,17 @@ Migrated actions:
 - `ms2_get_option`
 - `ms2_get_product_options`
 
-## Current modular mutation coverage
+## Current modular mutation coverage (1.2.2)
 
-The modular runtime now owns all 111 mutation actions.
+The modular runtime now owns all **112** mutation actions.
 
 <!-- MUTATION_MIGRATION_COVERAGE: 112/112 -->
 
 The first mutation block is the direct MODX-processor layer: Access/ACL, Context,
 Namespace and Lexicon writes. These actions now execute through
 `ProcessorMutationTool` + `MutationProcessorCatalog` instead of the legacy
-dispatcher. The mutation migration is now complete: all 111 mutation actions
-are registered in the modular Runtime, so all 192 server actions have a modular
+dispatcher. The mutation migration is complete: all **112** mutation actions
+are registered in the modular Runtime, so all **193** server actions have a modular
 implementation.
 
 On 2026-10-02 the then-current v1.1.0 modular registry was re-audited on the live MODX 3.2.4-pl sandbox with `_build/test.live-modular-parity.php`. That full live matrix covered the 182-action release contract, including all 74 read-only actions available at that time.
@@ -154,7 +155,7 @@ On 2026-10-06 the new `get_site_state` action and Runtime-CAS path first receive
 
 Filesystem media-source reads remain disabled on the sandbox by `modxmcp.allow_root_filesystem_read=0`; parity therefore verifies the same security denial on both paths rather than weakening the setting for a test. Capability groups that are disabled in persistent settings are enabled only in the parity process memory, so the live audit does not leave the sandbox with broader permissions.
 
-## Automated tests
+## Historical regression test results (up to 1.2.0)
 
 - Architecture: PASS.
 - Build architecture: PASS.
@@ -210,11 +211,11 @@ Live-tested on a clean MODX 2.8.9-pl sandbox.
 Status: LIVE-VALIDATED FOR CORE/RUNTIME AND RELEASE-SMOKE.
 
 
-## Unreleased development addition (2026-10-11)
+## Historical development note (2026-10-11; released in 1.2.2)
 
-The working tree, not stable v1.2.0, extends the contract to 193 actions
-(81 read-only + 112 mutations): update_element_property updates a single
-existing default property of a snippet/chunk/plugin/template. Requires an
-expected previous value (CAS), uses MODX processors, and keeps element code and
-unrelated property definitions unchanged. Tests and deployment must pass before
-this feature becomes an announced release.
+On 2026-10-11, the then-unreleased source extended the contract to 193 actions
+(81 reads / 112 mutations). The `update_element_property` operation changes a
+single existing default property of a snippet/chunk/plugin/template using an
+expected previous value (CAS), without replacing element code or unrelated
+property definitions. It was **subsequently included in v1.2.2**. The dedicated
+live element-property CAS write test remains outstanding.
