@@ -61,6 +61,12 @@ Documentation cannot prevent an AI client from misunderstanding a request. A sin
 
 If you discover a vulnerability, do not post working credentials or customer data to a public GitHub issue. Revoke exposed secrets and report enough sanitized information for maintainers to reproduce the problem safely.
 
+## Resource TV concurrency and CAS v2
+
+Starting with the published 1.2.3 transport on MODX 2 and MODX 3, `get_site_state` reports `precondition_version=2` for Connector-side TV CAS. A protected `modx_update_resource_tvs` request includes Runtime-managed `_runtime_preconditions`: the observed site revision, strict revision enforcement, and the `expected_tvs` map with exactly the TV names being changed. The Connector checks those conditions under its site mutation lock and rejects stale values rather than silently overwriting them.
+
+**Limit:** the raw MCP schema does not require this internal guard, so an unguarded direct call must **not** be presented as safe against concurrent agents. Site Agent users should use the reviewed Runtime `modx-tv-change` or Executor route. Failed CAS calls require fresh reads and a new plan, not blind retries.
+
 ## Implementation
 
 - [PHP endpoint and token validation](https://github.com/rumata-estor/modx3-mcp/blob/main/core/components/modxmcp/endpoint/api.common.php)

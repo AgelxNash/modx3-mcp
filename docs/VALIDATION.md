@@ -2,6 +2,15 @@
 
 # Connector validation status
 
+## Production integration addendum (2026-10-13–14)
+
+The statements below about production being unchanged on **2026-10-12** are accurate for that release-test date; production sites were upgraded **later**.
+
+- Two authorized MODX 3.2.4 production sites, `pontonnye-sistemy-pskov` and `lukigo`, were verified with MODX MCP server 1.2.3 and the matching 1.2.3 Site Agent MCP client. Both reported `atomic_preconditions=true` and `precondition_version=2`.
+- LokiGo's transport upgrade preserved the exact 16 MCP settings and API token, and its homepage check returned HTTP 200. Its TV read and Runtime dry-run checks passed; **no live TV mutation is claimed on LokiGo**.
+- The Pskov Telegram agent performed a real CAS-guarded TV update on page resource #31, then reversed it; the public FAQ returned to its original five questions. The operation was issued through the Site Agent Runtime wrapper, not an unguarded direct MCP call.
+- These were scoped operational checks, **not** a new release, a full mutation-regression suite on production, or proof of a cross-Runtime concurrent write test. Release version and public action counts remain unchanged.
+
 ## Stable 1.2.3 release validation (2026-10-12)
 
 The **[v1.2.3](https://github.com/rumata-estor/modx3-mcp/releases/tag/v1.2.3)** patch retains 193 server actions (81 reads / 112 mutations), of which 192 are public MCP tools. The only package behavior change is resolving relative README and CHANGELOG links in transport metadata to version-pinned GitHub URLs. Both ZIPs passed integrity checks and manifest verification for English/Russian docs, cross-language links and images. The transport-documentation PHP test and responsive manager/graph tests are included in GitHub Actions; the full four-job CI run succeeded.
@@ -50,7 +59,7 @@ One source tree contains a shared modular core plus platform adapters:
 - modular `Tools/`
 - shared endpoint `endpoint/api.common.php`
 
-In the **current 1.2.2 runtime**, the modular registry contains **193/193 server actions** (81 reads and 112 mutations), including the internal `get_capabilities` action; the MCP client publicly exposes 192 tools. The legacy dispatcher remains only as a compatibility/reference layer; normal requests are handled by the modular runtime.
+In the **1.2.2 baseline (also unchanged in released 1.2.3)**, the modular registry contains **193/193 server actions** (81 reads and 112 mutations), including the internal `get_capabilities` action; the MCP client publicly exposes 192 tools. The legacy dispatcher remains only as a compatibility/reference layer; normal requests are handled by the modular runtime.
 
 ## Historical 1.2.0 release readiness
 

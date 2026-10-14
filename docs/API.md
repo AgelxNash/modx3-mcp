@@ -306,7 +306,10 @@ Update a resource's template-variable (TV) values.
 | Parameter | Type | Required | Notes and allowed values |
 | --- | --- | :---: | --- |
 | `resource_id` | number | yes | — |
-| `tvs` | object | yes | — |
+| `tvs` | object | yes | Map of assigned TV names to **string** values. |
+| `_runtime_preconditions` | object | no (internal) | Site Agent Runtime-owned CAS guard; never generate manually in an agent. Includes `observed_site_revision`, `strict_site_revision` and `expected_tvs` for protected writes. |
+
+When the internal guard is supplied, MODX MCP validates site revision and the exact `expected_tvs` map (same keys as `tvs`) under the Connector's mutation lock. Unexpected values or stale revision cause the write to fail instead of overwriting newer state. This guard is **optional at the raw MCP API level**; therefore a direct call without it is **not** protected against cross-Runtime lost updates. For Site Agent, use its CAS-guarded `modx-tv-change` / Executor workflow, not direct unguarded TV mutations. Check `get_site_state` for `atomic_preconditions=true` and `precondition_version >= 2` before using the guarded Runtime route.
 
 ### `modx_list_tv_values`
 
