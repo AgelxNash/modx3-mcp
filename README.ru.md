@@ -230,6 +230,8 @@ MODX MCP не делает работу ИИ безошибочной. Язык�
 
 ## Установка через транспортный пакет MODX
 
+**Документация для каталога MODX Extras по версиям CMS:** [MODX 2.8.x — MODX2MCP 1.2.3](docs/extras/modx2mcp-1.2.3.ru.md) · [MODX 3.x — MODX MCP 1.2.3](docs/extras/modx3mcp-1.2.3.ru.md). Английские версии: [MODX 2](docs/extras/modx2mcp-1.2.3.md) · [MODX 3](docs/extras/modx3mcp-1.2.3.md).
+
 Из одной кодовой базы версии 1.2.3 собираются два платформенных транспортных пакета:
 
 - MODX 2.8.x: `modx2mcp-1.2.3-pl.transport.zip`;

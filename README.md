@@ -230,6 +230,8 @@ After that, you can move to more complex workflows and enable only the capabilit
 
 ## Install with the MODX transport package
 
+**Version-specific MODX Extras documentation:** [MODX 2.8.x — MODX2MCP 1.2.3](docs/extras/modx2mcp-1.2.3.md) · [MODX 3.x — MODX MCP 1.2.3](docs/extras/modx3mcp-1.2.3.md). Russian translations: [MODX 2](docs/extras/modx2mcp-1.2.3.ru.md) · [MODX 3](docs/extras/modx3mcp-1.2.3.ru.md). These documents provide the platform-specific installation and release notes for the existing Extras catalog listings.
+
 Version 1.2.3 produces two platform-specific transport packages from the same source tree:
 
 - MODX 2.8.x: `modx2mcp-1.2.3-pl.transport.zip`;
