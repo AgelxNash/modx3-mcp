@@ -94,6 +94,64 @@ class FilesystemSupport
         );
     }
 
+    public static function readTailLines($filePath, $limit = 100, $filter = null)
+    {
+        $limit = max(1, min((int)$limit, 1000));
+        if (!file_exists($filePath) || !is_readable($filePath)) {
+            return array();
+        }
+        $fp = @fopen($filePath, 'rb');
+        if (!$fp) {
+            return array();
+        }
+
+        $lines = array();
+        $buffer = '';
+        $chunkSize = 8192;
+        fseek($fp, 0, SEEK_END);
+        $pos = ftell($fp);
+        $firstChunk = true;
+
+        while ($pos > 0 && count($lines) < $limit) {
+            $readSize = min($chunkSize, $pos);
+            $pos -= $readSize;
+            fseek($fp, $pos, SEEK_SET);
+            $chunk = fread($fp, $readSize);
+            if ($chunk === false) { break; }
+            $buffer = $chunk . $buffer;
+
+            if ($firstChunk) {
+                $buffer = rtrim($buffer, "\r\n");
+                $firstChunk = false;
+            }
+
+            $parts = explode("\n", $buffer);
+            if ($pos > 0) {
+                $buffer = array_shift($parts);
+            } else {
+                $buffer = '';
+            }
+
+            for ($i = count($parts) - 1; $i >= 0; $i--) {
+                $line = rtrim($parts[$i], "\r");
+                if ($filter !== null) {
+                    $item = call_user_func($filter, $line);
+                    if ($item !== null) {
+                        $lines[] = $item;
+                    }
+                } else {
+                    $lines[] = $line;
+                }
+                if (count($lines) >= $limit) {
+                    break;
+                }
+            }
+        }
+        fclose($fp);
+
+        return array_reverse($lines);
+    }
+
     public static function normalizePath($path)
     {
         return rtrim(

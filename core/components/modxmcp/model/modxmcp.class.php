@@ -1991,10 +1991,8 @@ class modxMCP {
     private function readErrorLog($data) {
         $path = rtrim($this->modx->getOption('core_path'), '/') . '/cache/logs/error.log';
         if (!file_exists($path)) { return array('total' => 0, 'lines' => array(), 'path' => $path); }
-        $lines = file($path, FILE_IGNORE_NEW_LINES);
-        if ($lines === false) { $lines = array(); }
         $limit = isset($data['limit']) ? max(1, (int) $data['limit']) : 100;
-        $tail = array_slice($lines, -$limit);
+        $tail = $this->readTailLinesFromFile($path, $limit);
         return array('total' => count($tail), 'lines' => $tail);
     }
 
@@ -3326,18 +3324,16 @@ class modxMCP {
     private function readAuditLog($data) {
         $path = $this->auditLogPath();
         if (!file_exists($path)) { return array('total' => 0, 'entries' => array()); }
-        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        if ($lines === false) { $lines = array(); }
         $filterAction = isset($data['action']) ? (string) $data['action'] : '';
-        $entries = array();
-        foreach ($lines as $line) {
-            $e = json_decode($line, true);
-            if (!is_array($e)) { continue; }
-            if ($filterAction !== '' && (!isset($e['action']) || $e['action'] !== $filterAction)) { continue; }
-            $entries[] = $e;
-        }
         $limit = isset($data['limit']) ? max(1, (int) $data['limit']) : 100;
-        $entries = array_slice($entries, -$limit);
+        $entries = $this->readTailLinesFromFile($path, $limit, function ($line) use ($filterAction) {
+            $line = trim($line);
+            if ($line === '') { return null; }
+            $e = json_decode($line, true);
+            if (!is_array($e)) { return null; }
+            if ($filterAction !== '' && (!isset($e['action']) || $e['action'] !== $filterAction)) { return null; }
+            return $e;
+        });
         return array('total' => count($entries), 'entries' => $entries);
     }
 
@@ -5738,6 +5734,56 @@ class modxMCP {
         }
 
         return strpos($path, $rootPath . DIRECTORY_SEPARATOR) === 0;
+    }
+
+    private function readTailLinesFromFile($filePath, $limit = 100, $filter = null) {
+        $limit = max(1, min((int)$limit, 1000));
+        if (!file_exists($filePath) || !is_readable($filePath)) { return []; }
+        $fp = @fopen($filePath, 'rb');
+        if (!$fp) { return []; }
+
+        $lines = [];
+        $buffer = '';
+        $chunkSize = 8192;
+        fseek($fp, 0, SEEK_END);
+        $pos = ftell($fp);
+        $firstChunk = true;
+
+        while ($pos > 0 && count($lines) < $limit) {
+            $readSize = min($chunkSize, $pos);
+            $pos -= $readSize;
+            fseek($fp, $pos, SEEK_SET);
+            $chunk = fread($fp, $readSize);
+            if ($chunk === false) { break; }
+            $buffer = $chunk . $buffer;
+
+            if ($firstChunk) {
+                $buffer = rtrim($buffer, "\r\n");
+                $firstChunk = false;
+            }
+
+            $parts = explode("\n", $buffer);
+            if ($pos > 0) {
+                $buffer = array_shift($parts);
+            } else {
+                $buffer = '';
+            }
+
+            for ($i = count($parts) - 1; $i >= 0; $i--) {
+                $line = rtrim($parts[$i], "\r");
+                if ($filter !== null) {
+                    $item = call_user_func($filter, $line);
+                    if ($item !== null) {
+                        $lines[] = $item;
+                    }
+                } else {
+                    $lines[] = $line;
+                }
+                if (count($lines) >= $limit) { break; }
+            }
+        }
+        fclose($fp);
+        return array_reverse($lines);
     }
 
     private function isFilesystemMediaSource($source) {
