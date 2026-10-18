@@ -2950,7 +2950,11 @@ class modxMCP {
 
         // context/setting/create identifies the context via `fk` (get/remove/getlist use
         // `context_key`); mirror context_key -> fk so a single param works everywhere.
-        if (in_array($action, array('create_context_setting', 'update_context_setting'), true)) {
+        if (in_array($action, array('create_context_setting', 'update_context_setting', 'delete_context_setting'), true)) {
+            $key = isset($props['key']) ? (string)$props['key'] : '';
+            if (strpos($key, 'modxmcp.') === 0) {
+                throw new ModxMCPClientException('Managing modxmcp.* settings via MCP API is not allowed; use the manager or regenerate_token.');
+            }
             if (!isset($props['fk']) && isset($props['context_key'])) { $props['fk'] = $props['context_key']; }
             if (!isset($props['namespace'])) { $props['namespace'] = 'core'; }
         }

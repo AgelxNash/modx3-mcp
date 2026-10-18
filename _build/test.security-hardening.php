@@ -6,6 +6,7 @@ require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ToolInterface.php'
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/FilesystemSupport.php';
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ElementMutationSupport.php';
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/SystemSettingCreateTool.php';
+require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ProcessorMutationTool.php';
 
 class SecurityTestModx {
     private $paths;
@@ -86,6 +87,18 @@ try {
         (new \ModxMcp\Tools\SystemSettingCreateTool())->execute(
             $context, array('key' => 'modxmcp.require_https', 'value' => 0)
         );
+    });
+    mustRejectSecurity('reserved context setting creation', function () use ($context) {
+        (new \ModxMcp\Tools\ProcessorMutationTool(
+            'create_context_setting',
+            array('group' => 'contexts', 'processor' => 'context/setting/create', 'route' => 'context')
+        ))->execute($context, array('context_key' => 'mgr', 'key' => 'modxmcp.enabled', 'value' => 1));
+    });
+    mustRejectSecurity('reserved context setting update', function () use ($context) {
+        (new \ModxMcp\Tools\ProcessorMutationTool(
+            'update_context_setting',
+            array('group' => 'contexts', 'processor' => 'context/setting/update', 'route' => 'context')
+        ))->execute($context, array('context_key' => 'web', 'key' => 'modxmcp.allowed_ips', 'value' => ''));
     });
     echo "SECURITY_HARDENING_PHP_OK\n";
 } finally {
