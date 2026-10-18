@@ -4,6 +4,7 @@ class ModxMCPClientException extends Exception {}
 
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ToolInterface.php';
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/FilesystemSupport.php';
+require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ElementSupport.php';
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/ElementMutationSupport.php';
 require_once __DIR__ . '/../core/components/modxmcp/src/Tools/SystemSettingCreateTool.php';
 
@@ -85,6 +86,11 @@ try {
     mustRejectSecurity('reserved key creation', function () use ($context) {
         (new \ModxMcp\Tools\SystemSettingCreateTool())->execute(
             $context, array('key' => 'modxmcp.require_https', 'value' => 0)
+        );
+    });
+    mustRejectSecurity('tv static_file traversal', function () use ($context) {
+        \ModxMcp\Tools\ElementMutationSupport::prepare(
+            $context, 'tv', array('id' => 1, 'static' => 1, 'static_file' => '/etc/passwd'), 'update_element'
         );
     });
     echo "SECURITY_HARDENING_PHP_OK\n";
