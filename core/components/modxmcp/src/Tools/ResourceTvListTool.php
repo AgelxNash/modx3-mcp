@@ -36,7 +36,9 @@ class ResourceTvListTool implements ToolInterface
                 'name' => $tv->get('name'),
                 'caption' => $tv->get('caption'),
                 'type' => $tv->get('type'),
-                'value' => $resource->getTVValue($tv->get('name')),
+                'value' => method_exists($tv, 'getValue')
+                    ? (string)$tv->getValue($resourceId)
+                    : (string)$resource->getTVValue($tv->get('name')),
             );
         }
 
